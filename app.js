@@ -23,7 +23,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('port', process.env.PORT || 8002);
 
 app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); //main.css
+app.use('/img', express.static(path.join(__dirname, 'uploads'))); 
+//서버 경로와 프론트에서 접근하는 경로를 다르게 함(보안을 위해)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -42,6 +44,7 @@ app.use(passport.session());
 //사용자 정보 저장, 익스프레스 세션보다 아래에 있어야 함
 
 app.use('/', indexRouter);
+app.use('/user', userRouter);
 app.use('/auth', authRouter);
 app.use('/post', postRouter);
 
